@@ -1,0 +1,24 @@
+# State 1
+FROM node:20-alpine3.17 as builder
+
+WORKDIR /app
+
+COPY package*.json ./
+
+# # Install TypeScript
+RUN npm install -g typescript
+RUN npm install && npm cache clean --force
+
+COPY . .
+RUN npm run build
+RUN npm prune --production
+
+# Stage 2
+FROM node:20-alpine3.17
+
+WORKDIR /app
+
+COPY --from=builder /app/.output .
+
+CMD ["node", "./server/index.mjs"]
+

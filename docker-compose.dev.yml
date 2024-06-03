@@ -1,0 +1,30 @@
+services:
+    web:
+      build: 
+        context: .
+        dockerfile: Dockerfile.dev
+      volumes:
+        - ./.git:/app/.git
+        # 
+        - .devcontainer:/app/.devcontainer
+        - .gitignore:/app/.gitignore
+        - .env:/app/.env
+        - ./package.json:/app/package.json
+        #
+        # - ./server:/app/server
+        # - ./pages:/app/pages
+        # - ./middleware:/app/middleware
+        # - ./assets:/app/assets
+        # - ./layouts:/app/layouts
+        # - ./components:/app/components
+        # - ./plugins:/app/plugins
+        # - ./types:/app/types
+        # - ./composables:/app/composables
+        # - ./public:/app/public
+        # - ./utils:/app/utils
+        # - ./views:/app/views
+        # - ./nuxt.config.ts:/app/nuxt.config.ts
+        # 
+        - ..:/workspaces:cached
+  
+      command: npm run dev

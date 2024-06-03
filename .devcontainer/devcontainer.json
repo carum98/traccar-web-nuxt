@@ -1,0 +1,24 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/docker-existing-dockerfile
+{
+	"name": "Traccar WEB NUXT",
+	"shutdownAction": "stopCompose",
+	"dockerComposeFile": [
+		"../docker-compose.yml",
+		"../docker-compose.dev.yml"
+	],
+	"workspaceFolder": "/app",
+	"service": "web",
+	"postCreateCommand": "apk add --no-cache git",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"GitHub.copilot",
+				"dbaeumer.vscode-eslint",
+				"whizkydee.material-palenight-theme",
+				"vscodevim.vim",
+				"Vue.volar"
+			]
+		}
+	}
+}

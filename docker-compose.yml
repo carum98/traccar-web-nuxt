@@ -1,0 +1,9 @@
+version: '3.7'
+services:
+  web:
+    image: traccar-web-nuxt
+    container_name: traccar-web-nuxt
+    ports:
+      - "${PORT}:${PORT}"
+    environment:
+      - NUXT_API_TRACCAR=${API_TRACCAR}
