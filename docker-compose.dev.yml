@@ -11,19 +11,19 @@ services:
         - .env:/app/.env
         - ./package.json:/app/package.json
         #
-        # - ./server:/app/server
-        # - ./pages:/app/pages
-        # - ./middleware:/app/middleware
-        # - ./assets:/app/assets
+        - ./server:/app/server
+        - ./pages:/app/pages
+        - ./middleware:/app/middleware
+        - ./assets:/app/assets
         # - ./layouts:/app/layouts
-        # - ./components:/app/components
+        - ./components:/app/components
         # - ./plugins:/app/plugins
         # - ./types:/app/types
-        # - ./composables:/app/composables
+        - ./composables:/app/composables
         # - ./public:/app/public
-        # - ./utils:/app/utils
+        - ./utils:/app/utils
         # - ./views:/app/views
-        # - ./nuxt.config.ts:/app/nuxt.config.ts
+        - ./nuxt.config.ts:/app/nuxt.config.ts
         # 
         - ..:/workspaces:cached
   
