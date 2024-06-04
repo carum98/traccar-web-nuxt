@@ -1,6 +1,6 @@
 <script setup lang="ts">
 function submit(event: Event) {
-    const formData = new FormData(e.target as HTMLFormElement)
+    const formData = new FormData(event.target as HTMLFormElement)
     const params = Object.fromEntries(formData)
 
     console.log(params)
@@ -9,8 +9,16 @@ function submit(event: Event) {
 
 <template>
     <form @submit.prevent="submit">
-        <input type="text" v-model="email" placeholder="Email">
-        <input type="password" v-model="password" placeholder="Password">
-        <button @click.prevent="login">Login</button>
+        <label>
+            Email
+            <input type="text" name="email" placeholder="Email">
+        </label>
+
+        <label>
+            Password
+            <input type="password" name="password" placeholder="Password">
+        </label>
+
+        <button type="submit">Login</button>
     </form>
 </template>

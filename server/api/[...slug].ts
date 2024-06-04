@@ -1,3 +1,5 @@
+import { apiFetch } from "@utils/api-fetch"
+
 export default defineEventHandler(async (event) => {
     const method = event.method
 
@@ -5,7 +7,7 @@ export default defineEventHandler(async (event) => {
     const query = getQuery(event)
 
     if (method === 'GET') {
-        const data = await useApiFetch(event, slug, {
+        const data = await apiFetch(event, slug, {
             method,
             query
         })
@@ -14,14 +16,14 @@ export default defineEventHandler(async (event) => {
     } else if (method === 'POST' || method === 'PUT') {
         const body = await readBody(event)
 
-        const data = await useApiFetch(event, slug, {
+        const data = await apiFetch(event, slug, {
             method,
             body
         })
 
         return data
     }  else if (method === 'DELETE') {
-        const data = await useApiFetch(event, slug, {
+        const data = await apiFetch(event, slug, {
             method
         })
 
