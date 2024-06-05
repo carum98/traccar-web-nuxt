@@ -17,7 +17,7 @@ services:
         - ./assets:/app/assets
         # - ./layouts:/app/layouts
         - ./components:/app/components
-        # - ./plugins:/app/plugins
+        - ./plugins:/app/plugins
         # - ./types:/app/types
         - ./composables:/app/composables
         # - ./public:/app/public

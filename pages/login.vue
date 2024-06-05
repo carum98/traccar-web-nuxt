@@ -1,9 +1,16 @@
 <script setup lang="ts">
-function submit(event: Event) {
+const router = useRouter()
+
+async function submit(event: Event) {
     const formData = new FormData(event.target as HTMLFormElement)
     const params = Object.fromEntries(formData)
 
-    console.log(params)
+    await $fetch('/api/login', {
+        method: 'POST',
+        body: params
+    })
+
+    router.push('/')
 }
 </script>
 
