@@ -1,4 +1,8 @@
 <script setup lang="ts">
+definePageMeta({
+  layout: 'login'
+})
+
 const router = useRouter()
 
 async function submit(event: Event) {

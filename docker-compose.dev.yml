@@ -15,10 +15,10 @@ services:
         - ./pages:/app/pages
         - ./middleware:/app/middleware
         - ./assets:/app/assets
-        # - ./layouts:/app/layouts
+        - ./layouts:/app/layouts
         - ./components:/app/components
         - ./plugins:/app/plugins
-        # - ./types:/app/types
+        - ./types:/app/types
         - ./composables:/app/composables
         # - ./public:/app/public
         - ./utils:/app/utils
