@@ -1,7 +1,10 @@
 import { resolve } from 'path'
 
 export default defineNuxtConfig({
-    css: ['~/assets/css/main.css'],
+    css: [
+        '~/assets/css/main.css',
+        '~/node_modules/leaflet/dist/leaflet.css',
+    ],
     runtimeConfig: {
         apiTraccar: ''
     },
@@ -13,4 +16,7 @@ export default defineNuxtConfig({
         '@pages': resolve(__dirname, './pages'),
         '@views': resolve(__dirname, './views'),
     },
+    routeRules: {
+        '/': { ssr: false },
+    }
 })

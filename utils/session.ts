@@ -14,8 +14,6 @@ const config = {
 export const getSession = async (event: H3Event): Promise<SessionData> => {
     const session = await h3.getSession(event, config)
 
-    console.log('getSession', session)
-
     return session.data as SessionData
 }
 

@@ -13,16 +13,16 @@ const client = ofetch.create({
 })
 
 export const apiFetch = async (event: H3Event, request: RequestInfo, options?: FetchOptions) => {
-    const token = await getSession(event)
+    const session = await getSession(event)
 
-    if (token === null) {
+    if (session?.token === null) {
         return await useLogout(event)
     }
 
     return client(request, {
         ...options,
         headers: {
-            'Authorization': `Bearer ${token}`
+            'Authorization': `Bearer ${session.token}`
         },
         async onResponseError({ response, error }) {
             if (response.status === 401) {
