@@ -8,9 +8,17 @@
     color: inherit;
 }
 
-.leaflet-layer,
-.leaflet-control-zoom-in,
-.leaflet-control-zoom-out,
-.leaflet-control-attribution {
-  filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
+ul, li {
+    list-style: none;
+}
+
+#__nuxt, .traccar-layout {
+    width: 100vw;
+    height: 100vh;
+}
+
+@media (prefers-color-scheme: dark) {
+    .leaflet-layer, .leaflet-control-attribution {
+        filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
+    }
 }

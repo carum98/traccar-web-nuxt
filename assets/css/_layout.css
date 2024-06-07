@@ -1,4 +1,24 @@
 body {
     color-scheme: dark;
     background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+.traccar-layout {
+    position: relative;
+}
+
+.traccar-layout__aside {
+    position: absolute;
+    top: 10px;
+    bottom: 10px;
+    left: 10px;
+    z-index: 500;
+
+    width: 350px;
+
+    display: grid;
+    gap: 15px;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 80%;
 }

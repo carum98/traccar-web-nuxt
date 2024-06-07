@@ -1,3 +1,4 @@
 :root {
-    --background-color: light-dark(#efefec, #333b3c)
+    --background-color: light-dark(#efefec, #292d3e);
+    --text-color: light-dark(#292d3e, #efefec);
 }

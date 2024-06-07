@@ -1,68 +1,18 @@
 <script setup lang="ts">
-import L from 'leaflet'
-
 // data
-let map: L.Map
+const devices = ref<Device[]>([])
+const route = ref<Position[]>([])
+
+const { init, drawRoute, setMarkers } = useMap()
 
 // methods
-function initMap() {
-    const element = document.getElementById('map') as HTMLElement
-
-    map = L.map(element, {
-        center: [0, 0],
-        zoom: 13,
-        zoomControl: false
-    })
-
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map)
-}
-
-async function getDevices() {
-    const [devices, positions]: [Device[], Position[]] = await Promise.all([
-        $fetch('/api/devices'),
-        $fetch('/api/positions')
-    ])
-
-    const data = devices.map((device) => {
-        const position = positions.find((position) => position.id === device.positionId) as Position
-
-        return {
-            device,
-            position
-        }
-    })
-
-    return data
-}
-
-async function setMarkers() {
-    const items = await getDevices()
-
-    const markers = items.map((item) => L.marker([item.position.latitude, item.position.longitude]).on('click', () => {
-        drawTodayRoute(item.device.id)
-    }))
-
-    L.layerGroup(markers).addTo(map)
-
-    const lastMarker = markers.at(-1)
-    if (lastMarker) {
-        map.setView(lastMarker.getLatLng(), 18)
-    }
-}
-
-async function drawTodayRoute(deviceId: number) {
-    const positions = await getTodayPositions(deviceId)
-
-    const latLngs = positions.map((position) => [position.latitude, position.longitude]) as [number, number][]
-
-    L.polyline(latLngs, { color: 'red' }).addTo(map)
-}
-
 async function getTodayPositions(deviceId: number): Promise<Position[]> {
     const firstHour = new Date()
+    firstHour.setDate(firstHour.getDate() - 1)
     firstHour.setHours(0, 0, 0, 0)
 
     const lastHour = new Date()
+    lastHour.setDate(lastHour.getDate() - 1)
     lastHour.setHours(23, 59, 59, 999)
 
     return await $fetch<Position[]>(`/api/positions`, {
@@ -74,13 +24,30 @@ async function getTodayPositions(deviceId: number): Promise<Position[]> {
     })
 }
 
+// watch
+watch(devices, (values) => {
+    setMarkers(values, (device) => {
+        getTodayPositions(device.id).then((positions) => route.value = positions)
+    })
+})
+watch(route, (values) => {
+    drawRoute(values.map((item) => [item.latitude, item.longitude]))
+})
+
 // lifecycle
-onMounted(() => {
-    initMap()
-    setMarkers()
+onMounted(async () => {
+    init('map')
+    devices.value = await $fetch('/api/devices')
 })
 </script>
 
 <template>
-    <div id="map"></div>
+    <main class="traccar-layout">
+        <section class="traccar-layout__aside">
+            <DevicesList :devices="devices" />
+            <PositionsList :positions="route" />
+        </section>
+
+        <div id="map"></div>
+    </main>
 </template>

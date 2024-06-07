@@ -3,6 +3,27 @@
 @import './_layout.css';
 
 #map {
-  width: 100vw;
-  height: 100vh;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+}
+
+.list-items {
+    li {
+        background-color: color-mix(in srgb, var(--background-color),#000 30%);
+        padding: 10px 15px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+
+        cursor: pointer;
+        transition: background-color 0.3s;
+    
+        &:hover {
+            background-color: color-mix(in srgb, var(--background-color),#000 40%);
+        }
+    }
+
+    li:not(:last-child) {
+        margin-bottom: 10px;
+    }
 }
