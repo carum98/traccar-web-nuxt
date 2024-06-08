@@ -26,9 +26,11 @@ async function getTodayPositions(deviceId: number): Promise<Position[]> {
 
 // watch
 watch(devices, (values) => {
-    setMarkers(values, (device) => {
-        getTodayPositions(device.id).then((positions) => route.value = positions)
-    })
+    setMarkers(
+        values,
+        (device) => new IconDevice({ category: device.category }),
+        (device) => getTodayPositions(device.id).then((positions) => route.value = positions)
+    )
 })
 watch(route, (values) => {
     drawRoute(values.map((item) => [item.latitude, item.longitude]))

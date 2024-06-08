@@ -2,12 +2,7 @@
 @import './_variables.css';
 @import './_layout.css';
 @import './_icons.css';
-
-#map {
-    width: 100%;
-    height: 100%;
-    border-radius: 10px;
-}
+@import './_map.css';
 
 .list-items {
     height: 100%;

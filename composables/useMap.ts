@@ -26,10 +26,16 @@ export function useMap() {
         L.polyline(points, { color: 'red' }).addTo(map)
     }
 
-    function setMarkers<T>(items: Array<T & { lastPosition: { latitude: number, longitude: number } }>, onClick: (item: T) => void) {
-        const markers = items.map((item) => L.marker([item.lastPosition.latitude, item.lastPosition.longitude]).on('click', () => {
-            onClick(item)
-        }))
+    function setMarkers<T>(
+        items: Array<T & { lastPosition: { latitude: number, longitude: number } }>,
+        iconBuilder: (item: T) => L.Icon,
+        onClick: (item: T) => void
+    ) {
+        const markers = items.map((item) => L.marker([item.lastPosition.latitude, item.lastPosition.longitude], {
+                icon: iconBuilder(item)
+            })
+            .on('click', () => onClick(item)
+        ))
     
         L.layerGroup(markers).addTo(map)
     
@@ -50,3 +56,27 @@ export function useMap() {
         flyTo
     }
 }
+
+export const IconDevice = L.DivIcon.extend({
+    options: {
+        className: 'icon-device-marker',
+        iconAnchor: [20, 15],
+    },
+    createIcon: function () {
+        const { category } = this.options
+
+        const div = document.createElement('div')
+        const icon = document.createElement('i')
+
+        if (category === 'car') {
+            icon.classList.add('icon-car')
+        } else {
+            icon.classList.add('icon-location-dot')
+        }
+
+        div.appendChild(icon)
+        this._setIconStyles(div, 'icon')
+
+        return div
+    }
+}) as any
