@@ -12,6 +12,12 @@ ul, li {
     list-style: none;
 }
 
+button {
+    cursor: pointer;
+    border: none;
+    background: none;
+}
+
 #__nuxt, .traccar-layout {
     width: 100vw;
     height: 100vh;

@@ -20,5 +20,16 @@ body {
     display: grid;
     gap: 15px;
     grid-template-columns: 1fr;
-    grid-template-rows: auto 80%;
+    grid-template-rows: auto 70%;
+}
+
+.traccar-layout__navbar {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 500;
+
+    display: flex;
+    gap: 10px;
+    align-items: center;
 }

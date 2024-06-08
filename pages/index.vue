@@ -48,6 +48,11 @@ onMounted(async () => {
             <PositionsList :positions="route" />
         </section>
 
+        <section class="traccar-layout__navbar">
+            <ButtonSections />
+            <ButtonUserAvatar />
+        </section>
+
         <div id="map"></div>
     </main>
 </template>
