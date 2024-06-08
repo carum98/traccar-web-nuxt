@@ -1,7 +1,19 @@
+<script setup lang="ts">
+function logout() {
+    $fetch('/api/logout', { method: 'POST' })
+}
+</script>
+
 <template>
-    <button class="button_avatar">
-        <svg viewBox="0 0 448 512"><path fill="currentColor" d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"/></svg>
+    <button class="button_avatar" popovertarget="avatar_dropdown">
+        <i class="icon-user"></i>
     </button>
+    <div id="avatar_dropdown" popover>
+        <button @click="logout">
+            <i class="icon-right-from-bracket"></i>
+            Logout
+        </button>
+    </div>
 </template>
 
 <style>
@@ -15,10 +27,7 @@
     transition: background-color 0.3s;
     position: relative;
 
-    svg {
-        width: 17px;
-        height: 17px;
-    }
+    anchor-name: --avatar_dropdown;
 
     &::before {
         content: '';
@@ -31,6 +40,26 @@
 
     &:hover {
         background-color: color-mix(in srgb, var(--background-color),#000 10%);
+    }
+}
+
+#avatar_dropdown {
+    position-anchor: --avatar_dropdown;
+    inset-area: bottom span-left;
+
+    padding: 10px;
+    border-radius: 10px;
+
+    button {
+        height: 43px;
+        width: 100px;
+        border-radius: 10px;
+        font-size: 15px;
+        background-color: var(--item-background-color);
+
+        &:hover {
+            background-color: var(--item-background-color-hover)
+        }
     }
 }
 </style>

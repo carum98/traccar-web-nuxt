@@ -18,6 +18,11 @@ button {
     background: none;
 }
 
+[popover] {
+    border: unset;
+    background: var(--background-color);
+}
+
 #__nuxt, .traccar-layout {
     width: 100vw;
     height: 100vh;

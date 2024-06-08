@@ -59,3 +59,6 @@
 .icon-car:before { content: '\e802'; } /* '' */
 .icon-location-dot:before { content: '\e803'; } /* '' */
 .icon-grid-round:before { content: '\e804'; } /* '' */
+.icon-cars:before { content: '\e805'; } /* '' */
+.icon-report:before { content: '\e806'; } /* '' */
+.icon-geozone:before { content: '\e807'; } /* '' */

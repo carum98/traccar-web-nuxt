@@ -15,8 +15,8 @@ const { flyTo } = useMap()
                 @click="flyTo(device.lastPosition.latitude, device.lastPosition.longitude)"
             >
                 <span>
-                    <img v-if="device.category === 'car'" src="/assets/svg/car.svg"/>
-                    <img v-else src="/assets/svg/location-dot.svg"/>
+                    <i v-if="device.category === 'car'" class="icon-car"></i>
+                    <i v-else class="icon-location-dot"></i>
                 </span>
 
                 <div>
@@ -52,6 +52,11 @@ const { flyTo } = useMap()
             line-height: 17px;
         }
 
+        [class^="icon-"] {
+            font-size: 18px;
+            color: black;
+        }
+
         small {
             &.offline {
                 color: red;
@@ -60,11 +65,6 @@ const { flyTo } = useMap()
             &.online, &.unknown {
                 color: green;
             }
-        }
-
-        img {
-            width: 18px;
-            height: 18px;
         }
 
         span {

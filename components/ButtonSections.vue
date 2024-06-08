@@ -1,7 +1,25 @@
+<script setup lang="ts">
+const sections = [
+    { name: 'Devices', icon: 'icon-car' },
+    { name: 'Users', icon: 'icon-user' },
+    { name: 'Groups', icon: 'icon-cars' },
+    { name: 'Reports', icon: 'icon-report' },
+    { name: 'Geofences', icon: 'icon-geozone' },
+]
+</script>
+
 <template>
-    <button class="button_sections">
-        <svg viewBox="0 0 448 512"><path fill="currentColor" d="M128 96A64 64 0 1 1 0 96a64 64 0 1 1 128 0zm0 160A64 64 0 1 1 0 256a64 64 0 1 1 128 0zM64 480a64 64 0 1 1 0-128 64 64 0 1 1 0 128zM288 96A64 64 0 1 1 160 96a64 64 0 1 1 128 0zM224 320a64 64 0 1 1 0-128 64 64 0 1 1 0 128zm64 96a64 64 0 1 1 -128 0 64 64 0 1 1 128 0zm96-256a64 64 0 1 1 0-128 64 64 0 1 1 0 128zm64 96a64 64 0 1 1 -128 0 64 64 0 1 1 128 0zM384 480a64 64 0 1 1 0-128 64 64 0 1 1 0 128z"/></svg>
+    <button class="button_sections" popovertarget="sections_dropdown">
+        <i class="icon-grid-round"></i>
     </button>
+    <div id="sections_dropdown" popover>
+        <section>
+            <button v-for="section in sections" :key="section.name">
+                <i :class="section.icon"></i>
+                {{ section.name }}
+            </button>
+        </section>
+    </div>
 </template>
 
 <style>
@@ -14,14 +32,43 @@
     transition: background-color 0.3s;
     position: relative;
 
-    svg {
-        width: 20px;
-        height: 20px;
-        margin-top: 3px;
-    }
+    anchor-name: --sections_dropdown;
+
+    font-size: 20px;
 
     &:hover {
         background-color: color-mix(in srgb, var(--background-color),#000 10%);
+    }
+}
+
+#sections_dropdown {
+    position-anchor: --sections_dropdown;
+    inset-area: bottom span-left;
+
+    padding: 10px;
+    border-radius: 10px;
+
+    section {
+        display: grid;
+        grid-template-columns: repeat(3, 80px);
+        grid-auto-rows: 80px;
+        gap: 10px;
+    }
+
+    button {
+        border: unset;
+        border-radius: 10px;
+        background-color: var(--item-background-color);
+        font-size: 13px;
+
+        i {
+            display: block;
+            font-size: 25px;
+        }
+
+        &:hover {
+            background-color: color-mix(in srgb, var(--item-background-color),#000 10%);
+        }
     }
 }
 </style>

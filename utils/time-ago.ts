@@ -24,7 +24,7 @@ export function timeAgo(dateString: string) {
     const { value, name } = unit
     
     const time = Math.floor(seconds / value);
-    const rtf = new Intl.RelativeTimeFormat('es', { numeric: 'auto' });
+    const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
     
     return rtf.format(-time, name);
 }
