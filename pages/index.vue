@@ -33,7 +33,25 @@ watch(devices, (values) => {
     )
 })
 watch(route, (values) => {
-    drawRoute(values.map((item) => [item.latitude, item.longitude]))
+    const items = values.map((item) => {
+        return {
+            point: [item.longitude, item.latitude,],
+            item
+        }
+    }) as {
+        point: [number, number]
+        item: Position
+    }[]
+
+    drawRoute(
+        items,
+        (item) => {
+            document.getElementById(item.id.toString())?.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center'
+            })
+        },
+    )
 })
 
 // lifecycle

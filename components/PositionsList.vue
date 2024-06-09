@@ -12,6 +12,7 @@ const { flyTo } = useMap()
             <li 
                 v-for="position in positions" 
                 :key="position.id"
+                :id="position.id.toString()"
                 @click="flyTo(position.latitude, position.longitude)"
             >
                 <p>{{ position.latitude }}, {{ position.longitude }}</p>

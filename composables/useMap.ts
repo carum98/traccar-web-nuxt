@@ -4,14 +4,14 @@ let map: L.Map
 
 export const layers = [
     {
-        name: 'Stadia Dark',
-        value: 'stadia-dark',
-        layer: L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png')
-    },
-    {
         name: 'OpenStreetMap',
         value: 'openstreetmap',
         layer: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
+    },
+    {
+        name: 'Stadia Dark',
+        value: 'stadia-dark',
+        layer: L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png')
     },
     {
         name: 'Google Maps',
@@ -68,7 +68,10 @@ export function useMap() {
         setLayer(layers[0].layer)
     }
 
-    function drawRoute(points: [number, number][]) {
+    function drawRoute<T>(
+        points: { point: [number, number], item: T & { course: number } }[],
+        onClick: (item: T) => void
+    ) {
         // Remove previous route
         map.eachLayer((layer) => {
         if (layer instanceof L.Polyline) {
@@ -76,7 +79,54 @@ export function useMap() {
             }
         })
 
-        L.polyline(points, { color: 'red' }).addTo(map)
+        const coordinates = points.map(item => item.point)
+
+        const lines: GeoJSON.Feature<GeoJSON.LineString> = {
+            type: 'Feature',
+            properties: {},
+            geometry: {
+                type: 'LineString',
+                coordinates
+            }
+        }
+
+        const makers: GeoJSON.Feature<GeoJSON.MultiPoint> = {
+            type: 'Feature',
+            properties: {
+                points: points.map(item => item.item)
+            },
+            geometry: {
+                type: 'MultiPoint',
+                coordinates
+            }
+        }
+
+        const line = L.geoJSON(lines, {
+            style: {
+                color: 'blue',
+                weight: 5,
+                opacity: 0.7
+            }
+        }).addTo(map)
+
+        const pointsLayer = L.geoJSON(makers, {
+            pointToLayer: (feature, latlng) => {
+                const index = coordinates.findIndex(coordinate => coordinate[0] === latlng.lng && coordinate[1] === latlng.lat)
+
+                const item = feature.properties.points[index]
+
+                return L.marker(latlng, {
+                    icon: new IconCourse({ course: item.course })
+                })
+                .on('click', () => onClick(item))
+            }
+        }).addTo(map)
+
+        const layers = [line, pointsLayer]
+
+        map.fitBounds(line.getBounds())
+
+        return layers
     }
 
     function setMarkers<T>(
@@ -145,6 +195,28 @@ export const IconDevice = L.DivIcon.extend({
         } else {
             icon.classList.add('icon-location-dot')
         }
+
+        div.appendChild(icon)
+        this._setIconStyles(div, 'icon')
+
+        return div
+    }
+}) as any
+
+const IconCourse = L.DivIcon.extend({
+    options: {
+        className: 'icon-course-marker',
+    },
+    createIcon: function () {
+        const { course } = this.options
+
+        const div = document.createElement('div')
+        const icon = document.createElement('i')
+
+        icon.classList.add('icon-location-arrow-up')
+
+        icon.style.transform = `rotate(${course}deg)`
+        icon.style.display = 'block'
 
         div.appendChild(icon)
         this._setIconStyles(div, 'icon')
