@@ -65,3 +65,5 @@
 .icon-plus:before { content: '\e808'; } /* '' */
 .icon-minus:before { content: '\e809'; } /* '' */
 .icon-layer-group:before { content: '\e80a'; } /* '' */
+.icon-location-arrow-up:before { content: '\e80b'; } /* '' */
+.icon-engine:before { content: '\e80c'; } /* '' */
