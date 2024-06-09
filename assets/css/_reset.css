@@ -27,9 +27,3 @@ button {
     width: 100vw;
     height: 100vh;
 }
-
-@media (prefers-color-scheme: dark) {
-    .leaflet-layer, .leaflet-control-attribution {
-        filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
-    }
-}

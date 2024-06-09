@@ -33,3 +33,14 @@ body {
     gap: 10px;
     align-items: center;
 }
+
+.traccar-layout__controls {
+    position: absolute;
+    bottom: 25px;
+    right: 10px;
+    z-index: 500;
+
+    display: flex;
+    flex-flow: column;
+    gap: 10px;
+}
