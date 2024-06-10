@@ -77,6 +77,10 @@ onMounted(async () => {
             <MapControls />
         </section>
 
+        <section class="traccar-layout__player">
+            <PositionsPlayer :positions="route" />
+        </section>
+
         <div id="map"></div>
     </main>
 </template>

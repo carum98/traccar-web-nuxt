@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { zoom, setLayer } = useMap()
+const { zoom, setMapStyle } = useMap()
 
 const layer = ref(layers[0].value)
 
@@ -7,7 +7,7 @@ watch(layer, (value) => {
     const item = layers.find((item) => item.value === value)
 
     if (item) {
-        setLayer(item.layer)
+        setMapStyle(item.layer)
     }
 })
 </script>

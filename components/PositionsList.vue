@@ -1,19 +1,29 @@
 <script setup lang="ts">
-defineProps<{
+const props = defineProps<{
     positions: Position[]
 }>()
 
-const { flyTo } = useMap()
+const { moveTo, highlightRoutePoint } = useMap()
+
+const index = ref(0)
+
+function onSelect(position: Position) {
+    moveTo(position.latitude, position.longitude)
+    highlightRoutePoint(position.latitude, position.longitude)
+
+    index.value = props.positions.indexOf(position)
+}
 </script>
 
 <template>
     <div class="positions-list list-items">
         <ul>
             <li 
-                v-for="position in positions" 
+                v-for="(position, i) in positions" 
                 :key="position.id"
                 :id="position.id.toString()"
-                @click="flyTo(position.latitude, position.longitude)"
+                :class="{ 'active': index === i }"
+                @click="onSelect(position)"
             >
                 <p>{{ position.latitude }}, {{ position.longitude }}</p>
                 <small>{{ timeFormat(position.fixTime) }}</small>
@@ -46,6 +56,10 @@ const { flyTo } = useMap()
     border-radius: 10px;
     padding: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+
+    li.active {
+        background-color: var(--item-background-color-hover);
+    }
 
     li {
         position: relative;
@@ -81,6 +95,7 @@ const { flyTo } = useMap()
                     color: rgb(83, 139, 83);
                 }
             }
+
         }
 
         small {

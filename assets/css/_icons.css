@@ -67,3 +67,7 @@
 .icon-layer-group:before { content: '\e80a'; } /* '' */
 .icon-location-arrow-up:before { content: '\e80b'; } /* '' */
 .icon-engine:before { content: '\e80c'; } /* '' */
+.icon-play:before { content: '\e80d'; } /* '' */
+.icon-pause:before { content: '\e80e'; } /* '' */
+.icon-backward:before { content: '\e80f'; } /* '' */
+.icon-forward:before { content: '\e810'; } /* '' */

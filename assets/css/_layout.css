@@ -44,3 +44,13 @@ body {
     flex-flow: column;
     gap: 10px;
 }
+
+.traccar-layout__player {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    z-index: 500;
+
+    display: flex;
+    gap: 10px;
+}

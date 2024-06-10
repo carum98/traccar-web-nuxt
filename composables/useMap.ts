@@ -1,59 +1,23 @@
 import L from 'leaflet'
+import { layers, getMarkerByPoint } from '@utils/map'
+export { layers }
 
 let map: L.Map
 
-export const layers = [
-    {
-        name: 'OpenStreetMap',
-        value: 'openstreetmap',
-        layer: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
-    },
-    {
-        name: 'Stadia Dark',
-        value: 'stadia-dark',
-        layer: L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png')
-    },
-    {
-        name: 'Google Maps',
-        value: 'google',
-        layer: L.tileLayer('https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}')
-    },
-    {
-        name: 'Google Satellite',
-        value: 'google-satellite',
-        layer: L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}')
-    },
-    {
-        name: 'Google Terrain',
-        value: 'google-terrain',
-        layer: L.tileLayer('https://mt1.google.com/vt/lyrs=p&x={x}&y={y}&z={z}')
-    },
-    {
-        name: 'Google Hybrid',
-        value: 'google-hybrid',
-        layer: L.tileLayer('https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}')
-    },
-    {
-        name: 'Google Roads',
-        value: 'google-roads',
-        layer: L.tileLayer('https://mt1.google.com/vt/lyrs=t&x={x}&y={y}&z={z}')
-    },
-    {
-        name: 'Carto Dark',
-        value: 'carto-dark',
-        layer: L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png')
-    },
-    {
-        name: 'Carto Voyager',
-        value: 'carto-voyager',
-        layer: L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png')
-    },
-    {
-        name: 'Carto Positron',
-        value: 'carto-positron',
-        layer: L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png')
-    },
-]
+type MapContext = {
+    mapStyle: L.Layer | null
+    markerHighlight: L.Marker | null
+    route: {
+        points: L.GeoJSON<GeoJSON.MultiPoint>
+        line: L.GeoJSON<GeoJSON.LineString>
+    } | null
+}
+
+const context: MapContext = {
+    mapStyle: null,
+    markerHighlight: null,
+    route: null
+}
 
 export function useMap() {
     function init(id: string) {
@@ -65,19 +29,17 @@ export function useMap() {
             zoomControl: false
         })
     
-        setLayer(layers[0].layer)
+        setMapStyle(layers[0].layer)
     }
 
     function drawRoute<T>(
         points: { point: [number, number], item: T & { course: number } }[],
         onClick: (item: T) => void
     ) {
-        // Remove previous route
-        map.eachLayer((layer) => {
-        if (layer instanceof L.Polyline) {
-                map.removeLayer(layer)
-            }
-        })
+        if (context.route) {
+            map.removeLayer(context.route.points)
+            map.removeLayer(context.route.line)
+        }
 
         const coordinates = points.map(item => item.point)
 
@@ -101,7 +63,7 @@ export function useMap() {
             }
         }
 
-        const line = L.geoJSON(lines, {
+        const linesLayer = L.geoJSON(lines, {
             style: {
                 color: 'blue',
                 weight: 5,
@@ -109,10 +71,9 @@ export function useMap() {
             }
         }).addTo(map)
 
-        const pointsLayer = L.geoJSON(makers, {
+        const makersLayer = L.geoJSON(makers, {
             pointToLayer: (feature, latlng) => {
                 const index = coordinates.findIndex(coordinate => coordinate[0] === latlng.lng && coordinate[1] === latlng.lat)
-
                 const item = feature.properties.points[index]
 
                 return L.marker(latlng, {
@@ -122,11 +83,28 @@ export function useMap() {
             }
         }).addTo(map)
 
-        const layers = [line, pointsLayer]
+        map.fitBounds(linesLayer.getBounds())
 
-        map.fitBounds(line.getBounds())
+        context.route = {
+            points: makersLayer,
+            line: linesLayer
+        }
+    }
 
-        return layers
+    function highlightRoutePoint(lat: number, lon: number) {
+        const point = getMarkerByPoint(map, [lat, lon])
+        if (!point) return
+
+        if (context.markerHighlight) {
+            map.removeLayer(context.markerHighlight)
+        }
+
+        context.markerHighlight = L.marker(point.getLatLng(), {
+            icon: new IconCourse({ 
+                course: (point.options.icon?.options as L.DivIconOptions & { course: number }).course, 
+                highlight: true
+            })
+        }).addTo(map)
     }
 
     function setMarkers<T>(
@@ -148,21 +126,20 @@ export function useMap() {
         }
     }
 
-    function setLayer(layer: L.TileLayer) {
-        map.eachLayer((l) => {
-            if (l instanceof L.TileLayer) {
-                map.removeLayer(l)
-            }
-        })
-
-        layer.addTo(map)
+    function setMapStyle(layer: L.TileLayer) {
+        context.mapStyle?.remove()
+        map.addLayer(layer)
+        context.mapStyle = layer
     }
 
     function flyTo(lat: number, lon: number) {
         map.flyTo([lat, lon], 18)
     }
 
-    // Zoom
+    function moveTo(lat: number, lon: number) {
+        map.setView([lat, lon])
+    }
+
     function zoom(type: 'in' | 'out') {
         const currentZoom = map.getZoom()
         const newZoom = type === 'in' ? currentZoom + 1 : currentZoom - 1
@@ -174,8 +151,10 @@ export function useMap() {
         drawRoute,
         setMarkers,
         flyTo,
+        moveTo,
         zoom,
-        setLayer,
+        setMapStyle,
+        highlightRoutePoint,
     }
 }
 
@@ -208,7 +187,7 @@ const IconCourse = L.DivIcon.extend({
         className: 'icon-course-marker',
     },
     createIcon: function () {
-        const { course } = this.options
+        const { course, highlight } = this.options
 
         const div = document.createElement('div')
         const icon = document.createElement('i')
@@ -217,6 +196,11 @@ const IconCourse = L.DivIcon.extend({
 
         icon.style.transform = `rotate(${course}deg)`
         icon.style.display = 'block'
+
+        if (highlight) {
+            icon.style.color = 'red'
+            icon.style.scale = '1.5'
+        }
 
         div.appendChild(icon)
         this._setIconStyles(div, 'icon')
