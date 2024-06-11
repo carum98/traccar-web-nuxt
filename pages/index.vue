@@ -81,6 +81,10 @@ onMounted(async () => {
             <PositionsPlayer :positions="route" />
         </section>
 
+        <section class="traccar-layout__range">
+            <PositionsDateRange />
+        </section>
+
         <div id="map"></div>
     </main>
 </template>

@@ -71,3 +71,5 @@
 .icon-pause:before { content: '\e80e'; } /* '' */
 .icon-backward:before { content: '\e80f'; } /* '' */
 .icon-forward:before { content: '\e810'; } /* '' */
+.icon-calendar-week:before { content: '\e811'; } /* '' */
+.icon-arrow-right:before { content: '\e812'; } /* '' */

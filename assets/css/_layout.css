@@ -54,3 +54,10 @@ body {
     display: flex;
     gap: 10px;
 }
+
+.traccar-layout__range {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    z-index: 500;
+}

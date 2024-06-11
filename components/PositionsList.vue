@@ -5,7 +5,7 @@ const props = defineProps<{
 
 const { moveTo, highlightRoutePoint } = useMap()
 
-const index = ref(0)
+const index = useState<number>('progress')
 
 function onSelect(position: Position) {
     moveTo(position.latitude, position.longitude)

@@ -3,7 +3,7 @@ const props = defineProps<{
     positions: Position[]
 }>()
 
-const progress = ref(0)
+const progress = useState('progress', () => 0)
 const isPlaying = ref(false)
 
 let interval: NodeJS.Timeout | null = null
