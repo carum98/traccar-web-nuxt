@@ -73,3 +73,5 @@
 .icon-forward:before { content: '\e810'; } /* '' */
 .icon-calendar-week:before { content: '\e811'; } /* '' */
 .icon-arrow-right:before { content: '\e812'; } /* '' */
+.icon-angle-right:before { content: '\e813'; } /* '' */
+.icon-angle-left:before { content: '\e814'; } /* '' */

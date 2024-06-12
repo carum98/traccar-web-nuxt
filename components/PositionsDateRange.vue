@@ -4,9 +4,13 @@
             june 9, 12:01 am <i class="icon-arrow-right"></i> june 9, 11:59 pm
         </div>
 
-        <button>
+        <button popovertarget="date-picker">
             <i class="icon-calendar-week"></i>
         </button>
+
+        <div id="date-picker" popover>
+            <DatePickerIntex />
+        </div>
     </section>
 </template>
 
@@ -20,17 +24,24 @@
     display: flex;
     gap: 10px;
 
-    div {
+    > div {
         background-color: var(--item-background-color);
         padding: 10px 15px;
         border-radius: 10px;
     }
 
-    button {
+    > button {
         background-color: var(--item-background-color-hover);
         border-radius: 10px;
         width: 43px;
         height: 43px;
+
+        anchor-name: --date-picker;
+    }
+
+    #date-picker {
+        position-anchor: --date-picker;
+        inset-area: bottom;
     }
 }
 </style>

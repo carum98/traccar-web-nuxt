@@ -2,14 +2,14 @@ import L from 'leaflet'
 
 export const layers = [
     {
-        name: 'OpenStreetMap',
-        value: 'openstreetmap',
-        layer: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
-    },
-    {
         name: 'Stadia Dark',
         value: 'stadia-dark',
         layer: L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png')
+    },
+    {
+        name: 'OpenStreetMap',
+        value: 'openstreetmap',
+        layer: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
     },
     {
         name: 'Google Maps',

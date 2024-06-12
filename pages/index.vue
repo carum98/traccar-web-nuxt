@@ -8,11 +8,9 @@ const { init, drawRoute, setMarkers } = useMap()
 // methods
 async function getTodayPositions(deviceId: number): Promise<Position[]> {
     const firstHour = new Date()
-    firstHour.setDate(firstHour.getDate() - 1)
     firstHour.setHours(0, 0, 0, 0)
 
     const lastHour = new Date()
-    lastHour.setDate(lastHour.getDate() - 1)
     lastHour.setHours(23, 59, 59, 999)
 
     return await $fetch<Position[]>(`/api/positions`, {
