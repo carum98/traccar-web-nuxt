@@ -1,15 +1,55 @@
+<script setup lang="ts">
+const dates = ref({
+    start: new Date(),
+    end: new Date()
+})
+
+const datesText = computed(() => {
+    const start = dates.value.start
+        .toLocaleDateString('en-us', { month:"short", day:"numeric", hour12: true, hour: 'numeric', minute: 'numeric' })
+        .toLowerCase()
+
+    const end = dates.value.end
+        .toLocaleDateString('en-us', { month:"short", day:"numeric", hour12: true, hour: 'numeric', minute: 'numeric' })
+        .toLowerCase()
+
+    return {
+        start,
+        end
+    }
+})
+
+function closePopover() {
+    const popover = document.querySelector('#date-picker') as HTMLElement
+    popover.hidePopover()
+}
+
+function changeRangeTime({ start, end }: { start: Date, end: Date }) {
+    closePopover()
+
+    dates.value = {
+        start,
+        end
+    }
+}
+</script>
+
 <template>
     <section class="positions-date-range-picker">
-        <div>
-            june 9, 12:01 am <i class="icon-arrow-right"></i> june 9, 11:59 pm
-        </div>
+        <p>
+            {{ datesText.start }} <i class="icon-arrow-right"></i> {{ datesText.end }}
+        </p>
 
         <button popovertarget="date-picker">
             <i class="icon-calendar-week"></i>
         </button>
 
-        <div id="date-picker" popover>
-            <DatePickerIntex />
+        <div id="date-picker" popover="manual">
+            <DatePickerIntex 
+                :value="dates" 
+                @close="closePopover"
+                @input="changeRangeTime"
+            ></DatePickerIntex>
         </div>
     </section>
 </template>
@@ -24,7 +64,7 @@
     display: flex;
     gap: 10px;
 
-    > div {
+    > p {
         background-color: var(--item-background-color);
         padding: 10px 15px;
         border-radius: 10px;
@@ -41,7 +81,10 @@
 
     #date-picker {
         position-anchor: --date-picker;
-        inset-area: bottom;
+        inset-area: bottom span-left;
+
+        padding: 10px 15px;
+        border-radius: 10px;
     }
 }
 </style>

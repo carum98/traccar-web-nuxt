@@ -1,8 +1,7 @@
 <script setup lang="ts">
 const props = defineProps<{
     date: Date
-    hidePrev?: boolean
-    hideNext?: boolean
+    position?: 'left' | 'right'
 }>()
 
 // Emits
@@ -54,9 +53,15 @@ const days = computed(() => {
 })
 
 function onSelect(day: Date) {
-    if (start.value !== undefined) {
+    if (!start.value || !end.value) {
         start.value = day
+        end.value = day
+    } else if (day < start.value) {
+        start.value = day
+    } else if (day > end.value) {
+        end.value = day
     } else {
+        start.value = day
         end.value = day
     }
 }
@@ -65,11 +70,11 @@ function onSelect(day: Date) {
 <template>
     <section class="date-picker-calendar">
         <div class="date-picker-calendar__header">
-            <button @click="$emit('pre')" :disabled="!hideNext">
+            <button @click="$emit('pre')" :disabled="position === 'right'">
                 <i class="icon-angle-left"></i>
             </button>
             <span>{{ monthName }}</span>
-            <button @click="$emit('next')" :disabled="!hidePrev">
+            <button @click="$emit('next')" :disabled="position === 'left'">
                 <i class="icon-angle-right"></i>
             </button>
         </div>
@@ -85,8 +90,7 @@ function onSelect(day: Date) {
                 <button 
                     v-for="day in days" 
                     :class="{ 
-                        'is-before': start ? day >= start : false,
-                        'is-after': end ? day <= end : false,
+                        'is-selected': start && end && day >= start && day <= end,
                     }"
                     :disabled="day.getMonth() !== props.date.getMonth()"
                     @click="onSelect(day)"
@@ -147,8 +151,8 @@ function onSelect(day: Date) {
                 color: gray;
             }
 
-            &.is-before, &.is-after {
-                background-color: var(--background-color);
+            &.is-selected {
+                background-color: var(--primary-color);
             }
         }
     }
