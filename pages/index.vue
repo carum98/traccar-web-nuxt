@@ -1,42 +1,43 @@
 <script setup lang="ts">
+const { init, drawRoute, setMarkers } = useMap()
+
 // data
+const dates = ref({
+    start: new Date(),
+    end: new Date()
+})
+
+const device = ref<Device>()
 const devices = ref<Device[]>([])
 const route = ref<Position[]>([])
 
-const { init, drawRoute, setMarkers } = useMap()
-
 // methods
-async function getTodayPositions(deviceId: number): Promise<Position[]> {
-    const firstHour = new Date()
-    firstHour.setHours(0, 0, 0, 0)
-
-    const lastHour = new Date()
-    lastHour.setHours(23, 59, 59, 999)
-
-    return await $fetch<Position[]>(`/api/positions`, {
+async function getPositions(): Promise<void> {
+    route.value = await $fetch<Position[]>(`/api/positions`, {
         query: {
-            deviceId,
-            from: firstHour.toISOString(),
-            to: lastHour.toISOString()
+            deviceId: device.value?.id,
+            from: dates.value.start.toISOString(),
+            to: dates.value.end.toISOString()
         }
     })
 }
 
 // watch
+watch(dates, (_) => getPositions())
+watch(device, (_) => getPositions())
+
 watch(devices, (values) => {
     setMarkers(
         values,
-        (device) => new IconDevice({ category: device.category }),
-        (device) => getTodayPositions(device.id).then((positions) => route.value = positions)
+        (value) => new IconDevice({ category: value.category }),
+        (value) => device.value = value
     )
 })
 watch(route, (values) => {
-    const items = values.map((item) => {
-        return {
-            point: [item.longitude, item.latitude,],
-            item
-        }
-    }) as {
+    const items = values.map((item) => ({
+        point: [item.longitude, item.latitude,],
+        item
+    })) as {
         point: [number, number]
         item: Position
     }[]
@@ -48,7 +49,7 @@ watch(route, (values) => {
                 behavior: 'smooth',
                 block: 'center'
             })
-        },
+        }
     )
 })
 
@@ -56,14 +57,22 @@ watch(route, (values) => {
 onMounted(async () => {
     init('map')
     devices.value = await $fetch('/api/devices')
+
+    dates.value.start.setHours(0, 0, 0, 0)
+    dates.value.end.setHours(23, 59, 59, 999)
 })
 </script>
 
 <template>
     <main class="traccar-layout">
         <section class="traccar-layout__aside">
-            <DevicesList :devices="devices" />
-            <PositionsList :positions="route" />
+            <DevicesList 
+                :devices="devices" 
+                v-model="device"
+            ></DevicesList>
+            <PositionsList 
+                :positions="route"
+            ></PositionsList>
         </section>
 
         <section class="traccar-layout__navbar">
@@ -76,11 +85,15 @@ onMounted(async () => {
         </section>
 
         <section class="traccar-layout__player">
-            <PositionsPlayer :positions="route" />
+            <PositionsPlayer 
+                :positions="route"
+            ></PositionsPlayer>
         </section>
 
         <section class="traccar-layout__range">
-            <PositionsDateRange />
+            <PositionsDateRange 
+                v-model="dates"
+            ></PositionsDateRange>
         </section>
 
         <div id="map"></div>

@@ -4,30 +4,37 @@ defineProps<{
 }>()
 
 const { flyTo } = useMap()
+const device = defineModel<Device>()
+
+function onSelect(item: Device) {
+    device.value = item
+    flyTo(item.lastPosition.latitude, item.lastPosition.longitude)
+}
 </script>
 
 <template>
     <div class="devices-list list-items">
         <ul>
             <li 
-                v-for="device in devices" 
-                :key="device.id" 
-                @click="flyTo(device.lastPosition.latitude, device.lastPosition.longitude)"
+                v-for="item in devices" 
+                :key="item.id" 
+                :class="{ 'active': item.id === device?.id }"
+                @click="onSelect(item)"
             >
                 <span>
-                    <i v-if="device.category === 'car'" class="icon-car"></i>
+                    <i v-if="item.category === 'car'" class="icon-car"></i>
                     <i v-else class="icon-location-dot"></i>
                 </span>
 
                 <div>
-                    <p>{{ device.name }}</p>
+                    <p>{{ item.name }}</p>
 
-                    <small :class="device.status">
-                        <template v-if="device.lastUpdate">
-                            {{ timeAgo(device.lastUpdate) }}
+                    <small :class="item.status">
+                        <template v-if="item.lastUpdate">
+                            {{ timeAgo(item.lastUpdate) }}
                         </template>
                         <template v-else>
-                            {{ device.status }}
+                            {{ item.status }}
                         </template>
                     </small>
                 </div>

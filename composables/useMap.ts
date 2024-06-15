@@ -43,6 +43,8 @@ export function useMap() {
 
         const coordinates = points.map(item => item.point)
 
+        if (coordinates.length === 0) return
+
         const lines: GeoJSON.Feature<GeoJSON.LineString> = {
             type: 'Feature',
             properties: {},

@@ -1,7 +1,6 @@
 <script setup lang="ts">
-const dates = ref({
-    start: new Date(),
-    end: new Date()
+const dates = defineModel<{ start: Date, end: Date }>({
+    required: true
 })
 
 const datesText = computed(() => {

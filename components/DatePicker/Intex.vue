@@ -31,10 +31,6 @@ const times = reactive({
     }
 })
 
-watch(dates, (value) => {
-    console.log('dates', value)
-})
-
 const datesText = computed(() => {
     const start = dates.start.toLocaleDateString('en-us', { month:"short", day:"numeric" }) 
     const end = dates.end.toLocaleDateString('en-us', { month:"short", day:"numeric" })

@@ -17,7 +17,7 @@
         cursor: pointer;
         transition: background-color 0.3s;
     
-        &:hover {
+        &:hover, &.active {
             background-color: var(--item-background-color-hover);
         }
     }
