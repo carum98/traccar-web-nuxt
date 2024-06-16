@@ -25,7 +25,7 @@ export const apiFetch = async (event: H3Event, request: RequestInfo, options?: F
             'Authorization': `Bearer ${session.token}`
         },
         async onResponseError({ response, error }) {
-            if (response.status === 401) {
+            if (response.status === 401 || response.status === 400) {
                 await useLogout(event)
             } else {
                 sendError(event, createError({

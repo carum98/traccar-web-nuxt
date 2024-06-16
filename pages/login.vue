@@ -22,7 +22,7 @@ async function submit(event: Event) {
     <form @submit.prevent="submit">
         <label>
             Email
-            <input type="text" name="email" placeholder="Email">
+            <input type="email" name="email" placeholder="Email">
         </label>
 
         <label>
@@ -33,3 +33,30 @@ async function submit(event: Event) {
         <button type="submit">Login</button>
     </form>
 </template>
+
+<style scoped>
+    form {
+        width: 250px;
+
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+
+        margin-top: 1rem;
+
+        input {
+            width: 100%;
+        }
+
+        button[type="submit"] {
+            padding: 0.6rem;
+            border-radius: 10px;
+            background-color: var(--primary-color);
+            font-size: 16px;
+
+            &:hover {
+                background-color: var(--primary-color-dark);
+            }
+        }
+    }
+</style>

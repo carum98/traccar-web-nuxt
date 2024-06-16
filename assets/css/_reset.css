@@ -12,10 +12,23 @@ ul, li {
     list-style: none;
 }
 
+label {
+    display: block;
+}
+
 button {
     cursor: pointer;
     border: none;
     background: none;
+}
+
+input[type="text"], input[type="email"], input[type="password"] {
+    display: block;
+    padding: 10px 15px;
+    border: 1px solid gray;
+    border-radius: 10px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+    transition: border-color 0.3s;
 }
 
 [popover] {
