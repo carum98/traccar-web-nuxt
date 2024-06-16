@@ -11,6 +11,9 @@ const device = ref<Device>()
 const devices = ref<Device[]>([])
 const route = ref<Position[]>([])
 
+// computed
+const showSections = computed(() => device.value !== undefined && route.value.length > 0)
+
 // methods
 async function getPositions(): Promise<void> {
     route.value = await $fetch<Position[]>(`/api/positions`, {
@@ -64,7 +67,7 @@ onMounted(async () => {
 </script>
 
 <template>
-    <main class="traccar-layout">
+    <main class="traccar-layout" :class="{ 'hide-sections': !showSections }">
         <section class="traccar-layout__aside">
             <DevicesList 
                 :devices="devices" 

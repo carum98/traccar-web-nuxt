@@ -21,6 +21,10 @@ body {
     gap: 15px;
     grid-template-columns: 1fr;
     grid-template-rows: auto 70%;
+
+    .positions-list {
+        transition: transform 0.3s;
+    }
 }
 
 .traccar-layout__navbar {
@@ -50,6 +54,7 @@ body {
     bottom: 10px;
     left: 50%;
     z-index: 500;
+    transition: transform 0.3s;
 
     display: flex;
     gap: 10px;
@@ -60,4 +65,19 @@ body {
     top: 10px;
     left: 50%;
     z-index: 500;
+    transition: transform 0.3s;
+}
+
+.hide-sections {
+    .traccar-layout__player {
+        transform: translateY(120%);
+    }
+
+    .traccar-layout__range {
+        transform: translateY(-120%);
+    }
+
+    .traccar-layout__aside .positions-list {
+        transform: translateX(-120%);
+    }
 }
