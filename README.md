@@ -18,7 +18,7 @@ This project uses [Traccar API](https://www.traccar.org/api-reference/) to get t
 ### Docker
 ```bash
 docker build -t <name-container> -f ./Dockerfile.prod .
-docker run -d -p 8080:80 <name-container> -e NUXT_API_TRACCAR=<traccar-url>
+docker run -d -p 8080:3000 -e NUXT_API_TRACCAR=<traccar-url> <name-container>
 ```
 
 ### Manual
