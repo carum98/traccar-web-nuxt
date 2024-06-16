@@ -7,5 +7,6 @@ type Position = {
     course: number
     attributes: {
         ignition: boolean
+        motion: boolean
     }
 }

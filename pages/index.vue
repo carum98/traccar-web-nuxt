@@ -37,7 +37,9 @@ watch(devices, (values) => {
     )
 })
 watch(route, (values) => {
-    const items = values.map((item) => ({
+    const items = values
+    .filter((item) => item.attributes.motion)
+    .map((item) => ({
         point: [item.longitude, item.latitude,],
         item
     })) as {
