@@ -192,20 +192,14 @@ const IconCourse = L.DivIcon.extend({
         const { course, highlight } = this.options
 
         const div = document.createElement('div')
-        const icon = document.createElement('i')
+        const icon = document.createElement('div')
 
-        icon.classList.add('icon-location-arrow-up')
+        icon.style.borderBottomColor = highlight ? 'red' : '#160077'
 
-        icon.style.transform = `rotate(${course}deg)`
-        icon.style.display = 'block'
-
-        if (highlight) {
-            icon.style.color = 'red'
-            icon.style.scale = '1.5'
-        }
+        this._setIconStyles(div, 'icon')
+        icon.style.transform += `rotate(${course}deg)`
 
         div.appendChild(icon)
-        this._setIconStyles(div, 'icon')
 
         return div
     }
