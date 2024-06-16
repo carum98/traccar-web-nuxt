@@ -1,75 +1,31 @@
-# Nuxt 3 Minimal Starter
+# Traccar Web
+This is a unofficial web interface for [Traccar](https://www.traccar.org/) GPS tracking server. It is a simple and lightweight that allows you track your devices in real-time.
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+This project uses [Traccar API](https://www.traccar.org/api-reference/) to get the data from the server.
+
+## Screenshots
 
 ## Setup
 
-Make sure to install the dependencies:
-
+### Docker
+#### Build
 ```bash
-# npm
-npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
+docker build -t <name-container> -f ./Dockerfile.prod .
 ```
 
-## Development Server
-
-Start the development server on `http://localhost:3000`:
-
+#### Run
 ```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm run dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
+docker run -d -p 8080:80 <name-container> -e NUXT_API_TRACCAR=<traccar-url>
 ```
 
-## Production
+### Manual
+### Environment Variables
+You need to set the environment variable `NUXT_API_TRACCAR` with the URL of your Traccar server.
 
-Build the application for production:
-
+### Up
 ```bash
-# npm
-npm run build
-
-# pnpm
-pnpm run build
-
-# yarn
-yarn build
-
-# bun
-bun run build
+npm install # Install dependencies
+npm run build # Build the project
+node .output/server/index.mjs # Run the server
 ```
 
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
