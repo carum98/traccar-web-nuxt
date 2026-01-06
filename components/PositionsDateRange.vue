@@ -80,7 +80,7 @@ function changeRangeTime({ start, end }: { start: Date, end: Date }) {
 
     #date-picker {
         position-anchor: --date-picker;
-        inset-area: bottom span-left;
+        position-area: bottom span-left;
 
         padding: 10px 15px;
         border-radius: 10px;

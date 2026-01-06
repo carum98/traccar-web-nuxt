@@ -43,7 +43,7 @@ const sections = [
 
 #sections_dropdown {
     position-anchor: --sections_dropdown;
-    inset-area: bottom span-left;
+    position-area: bottom span-left;
 
     padding: 10px;
     border-radius: 10px;

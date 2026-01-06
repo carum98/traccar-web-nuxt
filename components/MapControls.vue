@@ -87,7 +87,7 @@ watch(layer, (value) => {
 
 #layers-dropdown {
     position-anchor: --layers-dropdown;
-    inset-area: left span-top;
+    position-area: left span-top;
 
     padding: 10px;
     border-radius: 10px;

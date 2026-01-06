@@ -45,7 +45,7 @@ function logout() {
 
 #avatar_dropdown {
     position-anchor: --avatar_dropdown;
-    inset-area: bottom span-left;
+    position-area: bottom span-left;
 
     padding: 10px;
     border-radius: 10px;
